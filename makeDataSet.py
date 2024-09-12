@@ -4,7 +4,7 @@
 # aiheet
 # aika
 
-# aihe topikit
+# aiheet
 
 # kotimaa "18-34837",
 # urheilu "18-220090",
@@ -41,6 +41,29 @@ subjectsOfIntrest = [
 "18-215844",
 ]
 
+from enum import Enum
+
+
+class ExtendedEnum(Enum):
+
+    @classmethod
+    def list(cls):
+        return list(map(lambda c: c.value, cls))
+
+class Subjects(ExtendedEnum):
+    kotimaa= "18-34837"
+    urheilu= "18-220090"
+    sää = "18-215833"
+    ulkomaat ="18-34953"
+    politiikka ="18-220306"
+    talous= "18-204933"
+    kulttuuri ="18-208149"
+    tiede ="18-212923"
+    luonto ="18-215452"
+    oppiminen ="18-204676"
+    kolumnit ="18-215844"
+
+
 
 # def getAttributesFromJson(path):
 #     f = open(path, encoding="utf8")
@@ -66,14 +89,16 @@ def getAttributesFromJson2(path):
         subjects = article.get("subjects", None)
         if subjects is not None:
             for subject in subjects:
-                if subject["id"] in subjectsOfIntrest:
-                    finalSubjects.append(subject["id"])
+                if subject["id"] in Subjects.list():
+                    finalSubjects.append(Subjects(subject["id"]).name)
+                    # Subjects(subject["id"]).name
         if len(finalSubjects) > 0:
             fullText = ""
             for paragraph in article["content"]:
                 if paragraph["type"] == "text":
                     fullText = fullText + "\n " + paragraph["text"]
-            articleObject = {"id" : article["id"], "url": article["url"], "headline": article["headline"]["full"], "text": fullText, "subjects": article.get("subjects", None), "datePublished": article["datePublished"]}
+            # articleObject = {"id" : article["id"], "url": article["url"], "headline": article["headline"]["full"], "text": fullText, "subjects": article.get("subjects", None), "datePublished": article["datePublished"]}
+            articleObject = {"id" : article["id"], "url": article["url"], "headline": article["headline"]["full"], "text": fullText, "subjects": finalSubjects, "datePublished": article["datePublished"]}
             tempObject.append(articleObject)
         
     f.close()
@@ -117,16 +142,16 @@ def writeToFile(data, name):
 getTextFromXml('../corpus/ocr sanomalehdet/klk_fi_1771_1874/arc01/0355-0257/1841/0355-0257_1841_1/alto/00001.xml')
 
 
-# documents = []
-# for file in list_files("ylenews-fi-2011-2018-src/data/fi"):
-#     documents = documents + getAttributesFromJson2(file)
-# print(len(documents))
-# # print(documents[0]["id"])
+documents = []
+for file in list_files("../ylenews-fi-2011-2018-src/data/fi"):
+    documents = documents + getAttributesFromJson2(file)
+print(len(documents))
+# print(documents[0]["id"])
 
-# df = pd.DataFrame(documents)
-# writeToFile(df, "2011-2018.csv")
-# print(len(df))
-# print(df.iloc[0]["id"])
+df = pd.DataFrame(documents)
+writeToFile(df, "2011-2018-3.csv")
+print(len(df))
+print(df.iloc[0]["id"])
 
 
 # df = pd.read_csv('output.csv', sep='␞')
