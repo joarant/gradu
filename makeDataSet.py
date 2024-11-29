@@ -20,6 +20,19 @@
 
 
 
+# paperin luokat:
+
+# urheilu "18-220090",
+# talous "18-204933",
+# politiikka "18-220306",
+# kulttuuri "18-208149",
+# luonto "18-215452",
+# 18-218480 - Onnettomuudet
+# 18-209306 - Terveys
+# 18-217206 - Rikokset
+# 18-91232 - Liikenne ja kuljetus
+# 18-35286 - Koulutus ja kasvatus
+
 import json
 import csv
 import os
